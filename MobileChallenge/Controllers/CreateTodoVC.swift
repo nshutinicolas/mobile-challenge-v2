@@ -26,7 +26,7 @@ class CreateTodoVC: UIViewController {
     }()
     let tapImageView: UIView = {
         let view = UIView()
-        view.backgroundColor = .lightGray
+        view.backgroundColor = #colorLiteral(red: 0.9568627451, green: 0.9607843137, blue: 0.9647058824, alpha: 1)
         return view
     }()
     let selectedImageView = UIImageView()
@@ -40,7 +40,7 @@ class CreateTodoVC: UIViewController {
     let titleInputField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Task title (140 Characters)"
-        textField.backgroundColor = .lightGray
+        textField.backgroundColor = #colorLiteral(red: 0.9568627451, green: 0.9607843137, blue: 0.9647058824, alpha: 1)
         textField.layer.cornerRadius = 4
         return textField
     }()
@@ -54,7 +54,7 @@ class CreateTodoVC: UIViewController {
         let textView = UITextView()
         textView.text = "240 Characters"
         textView.textColor = .gray
-        textView.backgroundColor = .lightGray
+        textView.backgroundColor = #colorLiteral(red: 0.9568627451, green: 0.9607843137, blue: 0.9647058824, alpha: 1)
         return textView
     }()
     let inputPriorityLbl: UILabel = {
@@ -70,7 +70,7 @@ class CreateTodoVC: UIViewController {
     let titlePriorityField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Select priority"
-        textField.backgroundColor = .lightGray
+        textField.backgroundColor = #colorLiteral(red: 0.9568627451, green: 0.9607843137, blue: 0.9647058824, alpha: 1)
         textField.layer.cornerRadius = 4
         return textField
     }()
@@ -78,12 +78,17 @@ class CreateTodoVC: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         descriptionInputField.delegate = self
+        let openImageSource = UITapGestureRecognizer(target: self, action: #selector(imageSourcePicker))
+        tapImageView.addGestureRecognizer(openImageSource)
+        let priorityTap = UITapGestureRecognizer(target: self, action: #selector(onOpenPriorityDropdown))
+        textPriorityView.addGestureRecognizer(priorityTap)
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        [titleLbl,addImageLbl,tapImageView, inputTitleLbl, titleInputField, inputDescriptionLbl, descriptionInputField, inputPriorityLbl].forEach { item in
+        [titleLbl,addImageLbl,tapImageView, inputTitleLbl, titleInputField, inputDescriptionLbl, descriptionInputField, inputPriorityLbl, textPriorityView].forEach { item in
             view.addSubview(item)
         }
+        textPriorityView.addSubview(titlePriorityField)
         titleLbl.layoutConstraints(top: view.safeAreaLayoutGuide.topAnchor, leading: view.safeAreaLayoutGuide.leadingAnchor, bottom: nil, trailing: view.safeAreaLayoutGuide.trailingAnchor, padding: .init(top: 30, left: 20, bottom: 0, right: -20))
         
         addImageLbl.layoutConstraints(top: titleLbl.bottomAnchor, leading: view.safeAreaLayoutGuide.leadingAnchor, bottom: nil, trailing: view.safeAreaLayoutGuide.trailingAnchor, padding: .init(top: 40, left: 20, bottom: 0, right: -15))
@@ -93,6 +98,8 @@ class CreateTodoVC: UIViewController {
         inputDescriptionLbl.layoutConstraints(top: titleInputField.bottomAnchor, leading: view.safeAreaLayoutGuide.leadingAnchor, bottom: nil, trailing: view.safeAreaLayoutGuide.trailingAnchor, padding: .init(top: 30, left: 15, bottom: 0, right: -15))
         descriptionInputField.layoutConstraints(top: inputDescriptionLbl.bottomAnchor, leading: view.safeAreaLayoutGuide.leadingAnchor, bottom: nil, trailing: view.safeAreaLayoutGuide.trailingAnchor, padding: .init(top: 10, left: 15, bottom: 0, right: -15), size: .init(width: 0, height: 120))
         inputPriorityLbl.layoutConstraints(top: descriptionInputField.bottomAnchor, leading: view.safeAreaLayoutGuide.leadingAnchor, bottom: nil, trailing: view.safeAreaLayoutGuide.trailingAnchor, padding: .init(top: 30, left: 15, bottom: 0, right: -15))
+        textPriorityView.layoutConstraints(top: inputPriorityLbl.bottomAnchor, leading: view.safeAreaLayoutGuide.leadingAnchor, bottom: nil, trailing: view.safeAreaLayoutGuide.trailingAnchor, padding: .init(top: 10, left: 15, bottom: 0, right: -15), size: .init(width: 0, height: 50))
+        titlePriorityField.layoutConstraints(top: textPriorityView.topAnchor, leading: textPriorityView.leadingAnchor, bottom: textPriorityView.bottomAnchor, trailing: textPriorityView.trailingAnchor)
     }
     private func tapPriority(){
         priorityDropdown.anchorView = titlePriorityField
@@ -104,6 +111,9 @@ class CreateTodoVC: UIViewController {
             print("Selected item: \(item) at index: \(index)")
             self.titlePriorityField.text = item
         }
+    }
+    @objc private func onOpenPriorityDropdown(){
+        priorityDropdown.show()
     }
 }
 
@@ -121,6 +131,17 @@ extension CreateTodoVC: UITextViewDelegate {
 }
 
 extension CreateTodoVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    @objc private func imageSourcePicker() {
+        let actionSheet = UIAlertController(title: "", message:"How would you like to select your picture", preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title:"Cancel", style: .cancel, handler: nil))
+        actionSheet.addAction(UIAlertAction(title:"Take Photo", style: .default, handler: { [weak self]_ in
+            self?.presentCamera()
+        }))
+        actionSheet.addAction(UIAlertAction(title:"Choose Photo", style: .default, handler: { [weak self]_ in
+            self?.presentPhotoLibary()
+        }))
+        self.present(actionSheet, animated: true, completion: nil)
+    }
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             let selectedImg = UIImageView()
@@ -142,12 +163,6 @@ extension CreateTodoVC: UIImagePickerControllerDelegate, UINavigationControllerD
     }
     @objc func hideKeyboard() {
         self.view.endEditing(true)
-    }
-    func alertNotif(title:String, message:String){
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let alertAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
-        alert.addAction(alertAction)
-        self.present(alert, animated: true, completion: nil)
     }
     func presentCamera(){
         picker.sourceType = .camera

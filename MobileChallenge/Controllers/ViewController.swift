@@ -20,7 +20,7 @@ class ViewController: UIViewController {
 
     let headerView: UIView = {
         let view = UIView()
-        view.backgroundColor = .black
+        view.backgroundColor = #colorLiteral(red: 0.09803921569, green: 0.1568627451, blue: 0.2078431373, alpha: 1)
         return view
     }()
     let topLogo: UIImageView = {
