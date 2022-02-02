@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		692DA3FF13A0A49E9B40E825 /* Pods_MobileChallenge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 560CDDE3B4CEE9EFD00012BC /* Pods_MobileChallenge.framework */; };
 		6C342A7D27AAD88100D35122 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C342A7C27AAD88100D35122 /* AppDelegate.swift */; };
 		6C342A7F27AAD88100D35122 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C342A7E27AAD88100D35122 /* SceneDelegate.swift */; };
 		6C342A8127AAD88100D35122 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C342A8027AAD88100D35122 /* ViewController.swift */; };
@@ -18,9 +19,13 @@
 		6C342A9A27AADDFF00D35122 /* NoValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C342A9927AADDFF00D35122 /* NoValueView.swift */; };
 		6CD9609127AB16550032B494 /* WithValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD9609027AB16540032B494 /* WithValueView.swift */; };
 		6CD9609327AB1D260032B494 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD9609227AB1D260032B494 /* StorageManager.swift */; };
+		6CD9609527AB1F5B0032B494 /* TodoItemCellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD9609427AB1F5B0032B494 /* TodoItemCellTableViewCell.swift */; };
+		6CD9609727AB22D70032B494 /* CreateTodoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD9609627AB22D60032B494 /* CreateTodoVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3C3820DE0DF67748A15676DA /* Pods-MobileChallenge.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MobileChallenge.release.xcconfig"; path = "Target Support Files/Pods-MobileChallenge/Pods-MobileChallenge.release.xcconfig"; sourceTree = "<group>"; };
+		560CDDE3B4CEE9EFD00012BC /* Pods_MobileChallenge.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MobileChallenge.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C342A7927AAD88100D35122 /* MobileChallenge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobileChallenge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C342A7C27AAD88100D35122 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6C342A7E27AAD88100D35122 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -34,6 +39,9 @@
 		6C342A9927AADDFF00D35122 /* NoValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoValueView.swift; sourceTree = "<group>"; };
 		6CD9609027AB16540032B494 /* WithValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithValueView.swift; sourceTree = "<group>"; };
 		6CD9609227AB1D260032B494 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
+		6CD9609427AB1F5B0032B494 /* TodoItemCellTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItemCellTableViewCell.swift; sourceTree = "<group>"; };
+		6CD9609627AB22D60032B494 /* CreateTodoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTodoVC.swift; sourceTree = "<group>"; };
+		C3A7596A34ABF25F50ED86EE /* Pods-MobileChallenge.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MobileChallenge.debug.xcconfig"; path = "Target Support Files/Pods-MobileChallenge/Pods-MobileChallenge.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,17 +49,38 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				692DA3FF13A0A49E9B40E825 /* Pods_MobileChallenge.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		306DC17A1D4313AF092BDE10 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				560CDDE3B4CEE9EFD00012BC /* Pods_MobileChallenge.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4DD6804483E7A069B00F7EC0 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C3A7596A34ABF25F50ED86EE /* Pods-MobileChallenge.debug.xcconfig */,
+				3C3820DE0DF67748A15676DA /* Pods-MobileChallenge.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		6C342A7027AAD88100D35122 = {
 			isa = PBXGroup;
 			children = (
 				6C342A7B27AAD88100D35122 /* MobileChallenge */,
 				6C342A7A27AAD88100D35122 /* Products */,
+				4DD6804483E7A069B00F7EC0 /* Pods */,
+				306DC17A1D4313AF092BDE10 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -85,6 +114,7 @@
 			isa = PBXGroup;
 			children = (
 				6C342A8027AAD88100D35122 /* ViewController.swift */,
+				6CD9609627AB22D60032B494 /* CreateTodoVC.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -94,6 +124,7 @@
 			children = (
 				6C342A9927AADDFF00D35122 /* NoValueView.swift */,
 				6CD9609027AB16540032B494 /* WithValueView.swift */,
+				6CD9609427AB1F5B0032B494 /* TodoItemCellTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -121,9 +152,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6C342A9027AAD88500D35122 /* Build configuration list for PBXNativeTarget "MobileChallenge" */;
 			buildPhases = (
+				4AAEA3569110B2B140DF303A /* [CP] Check Pods Manifest.lock */,
 				6C342A7527AAD88100D35122 /* Sources */,
 				6C342A7627AAD88100D35122 /* Frameworks */,
 				6C342A7727AAD88100D35122 /* Resources */,
+				68CFF47A953FF70E2514A862 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -180,12 +213,56 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		4AAEA3569110B2B140DF303A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MobileChallenge-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		68CFF47A953FF70E2514A862 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MobileChallenge/Pods-MobileChallenge-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MobileChallenge/Pods-MobileChallenge-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MobileChallenge/Pods-MobileChallenge-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		6C342A7527AAD88100D35122 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				6C342A9827AADBB100D35122 /* Extensions.swift in Sources */,
+				6CD9609527AB1F5B0032B494 /* TodoItemCellTableViewCell.swift in Sources */,
+				6CD9609727AB22D70032B494 /* CreateTodoVC.swift in Sources */,
 				6C342A8127AAD88100D35122 /* ViewController.swift in Sources */,
 				6C342A7D27AAD88100D35122 /* AppDelegate.swift in Sources */,
 				6CD9609127AB16550032B494 /* WithValueView.swift in Sources */,
@@ -336,6 +413,7 @@
 		};
 		6C342A9127AAD88500D35122 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C3A7596A34ABF25F50ED86EE /* Pods-MobileChallenge.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -363,6 +441,7 @@
 		};
 		6C342A9227AAD88500D35122 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3C3820DE0DF67748A15676DA /* Pods-MobileChallenge.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

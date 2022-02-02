@@ -36,6 +36,7 @@ class ViewController: UIViewController {
         button.tintColor = .white
         button.backgroundColor = .black
         button.layer.cornerRadius = 30
+        button.addTarget(self, action: #selector(addTodo), for: .touchUpInside)
         return button
     }()
     let filterBtn: UIButton = {
@@ -124,6 +125,10 @@ class ViewController: UIViewController {
         welcomeLbl.layoutConstraints(top: mainView.topAnchor, leading: mainView.leadingAnchor, bottom: nil, trailing: mainView.trailingAnchor, padding: .init(top: 20, left: 20, bottom: 0, right: 20))
         noValueView.layoutConstraints(top: welcomeLbl.bottomAnchor, leading: mainView.leadingAnchor, bottom: mainView.bottomAnchor, trailing: mainView.trailingAnchor, padding: .init(top: 20, left: 0, bottom: 0, right: 0))
         withValuesView.layoutConstraints(top: welcomeLbl.bottomAnchor, leading: mainView.leadingAnchor, bottom: nil, trailing: mainView.trailingAnchor, padding: .init(top: 20, left: 0, bottom: 0, right: 0))
+    }
+    @objc private func addTodo(){
+        let createTodo = CreateTodoVC()
+        navigationController?.pushViewController(createTodo, animated: true)
     }
 
 }
