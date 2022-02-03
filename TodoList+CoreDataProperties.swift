@@ -23,6 +23,7 @@ extension TodoList {
     @NSManaged public var updated_at: Date?
     @NSManaged public var photo: Data?
     @NSManaged public var priority: String?
+    @NSManaged public var status: String?
 
 }
 

@@ -95,6 +95,7 @@ class ViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        fetchTodo()
         view.addSubview(headerView)
         headerView.addSubview(topLogo)
         headerView.addSubview(filterBtn)
@@ -133,6 +134,10 @@ class ViewController: UIViewController {
                 }
                 self?.success()
                 self?.todos = todoItems
+                self?.withValuesView.totalTaskLbl.text = "\(todoItems.count)"
+                let doneTasks = todoItems.filter{$0.status == "completed"}
+                self?.withValuesView.activeTaskLbl.text = "\(todoItems.count - doneTasks.count)"
+                self?.withValuesView.doneTaskLbl.text = "\(doneTasks.count)"
                 print("items: \(todoItems.count) todo: \(String(describing: self?.todos.count))")
             }
         } onFail: { [weak self] error in

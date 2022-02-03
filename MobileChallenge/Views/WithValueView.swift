@@ -22,12 +22,12 @@ class WithValueView: UIView {
     let activeTaskLbl: UILabel = {
         let label = UILabel()
         label.textColor = #colorLiteral(red: 0.7568627451, green: 0.8117647059, blue: 0.0862745098, alpha: 1)
-        label.font = .systemFont(ofSize: 25)
+        label.font = .systemFont(ofSize: 20, weight: .bold)
         return label
     }()
     let activeLowerLbl: UILabel = {
         let label = UILabel()
-        label.textColor = #colorLiteral(red: 0.7568627451, green: 0.8117647059, blue: 0.0862745098, alpha: 1)
+        label.textColor = #colorLiteral(red: 0.09803921569, green: 0.1568627451, blue: 0.2078431373, alpha: 1)
         label.text = "Active Tasks"
         label.font = .systemFont(ofSize: 16)
         label.adjustsFontSizeToFitWidth = true
@@ -47,15 +47,15 @@ class WithValueView: UIView {
     let doneTaskLbl: UILabel = {
         let label = UILabel()
         label.textColor = #colorLiteral(red: 0.7568627451, green: 0.8117647059, blue: 0.0862745098, alpha: 1)
-        label.font = .systemFont(ofSize: 25)
-        label.adjustsFontSizeToFitWidth = true
+        label.font = .systemFont(ofSize: 20, weight: .bold)
         return label
     }()
     let doneLowerLbl: UILabel = {
         let label = UILabel()
-        label.textColor = #colorLiteral(red: 0.7568627451, green: 0.8117647059, blue: 0.0862745098, alpha: 1)
-        label.text = "Active Tasks"
+        label.textColor = #colorLiteral(red: 0.09803921569, green: 0.1568627451, blue: 0.2078431373, alpha: 1)
+        label.text = "Tasks Done"
         label.font = .systemFont(ofSize: 16)
+        label.adjustsFontSizeToFitWidth = true
         return label
     }()
     let totalTasksView: UIView = {
@@ -72,14 +72,13 @@ class WithValueView: UIView {
     let totalTaskLbl: UILabel = {
         let label = UILabel()
         label.textColor = #colorLiteral(red: 0.7568627451, green: 0.8117647059, blue: 0.0862745098, alpha: 1)
-        label.text = "20"
         label.font = .systemFont(ofSize: 20, weight: .bold)
         return label
     }()
     let totalLowerLbl: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.text = "Active Tasks"
+        label.text = "Total Tasks"
         label.font = .systemFont(ofSize: 16)
         label.adjustsFontSizeToFitWidth = true
         return label
@@ -112,6 +111,15 @@ class WithValueView: UIView {
         totalTaskLbl.layoutConstraints(top: totalTasksView.topAnchor, leading: totalTasksView.leadingAnchor, bottom: nil, trailing: totalTasksView.trailingAnchor, padding: .init(top: 10, left: 15, bottom: 0, right: -15))
         totalLowerLbl.layoutConstraints(top: totalTaskLbl.bottomAnchor, leading: totalTasksView.leadingAnchor, bottom: nil, trailing: totalTasksView.trailingAnchor, padding: .init(top: 6, left: 15, bottom: 0, right: -15))
         
+        activeTaskView.addSubview(activeTaskLbl)
+        activeTaskView.addSubview(activeLowerLbl)
+        activeTaskLbl.layoutConstraints(top: activeTaskView.topAnchor, leading: activeTaskView.leadingAnchor, bottom: nil, trailing: activeTaskView.trailingAnchor, padding: .init(top: 10, left: 15, bottom: 0, right: -15))
+        activeLowerLbl.layoutConstraints(top: activeTaskLbl.bottomAnchor, leading: activeTaskView.leadingAnchor, bottom: nil, trailing: activeTaskView.trailingAnchor, padding: .init(top: 6, left: 15, bottom: 0, right: -15))
+        
+        tasksDoneView.addSubview(doneTaskLbl)
+        tasksDoneView.addSubview(doneLowerLbl)
+        doneTaskLbl.layoutConstraints(top: tasksDoneView.topAnchor, leading: tasksDoneView.leadingAnchor, bottom: nil, trailing: tasksDoneView.trailingAnchor, padding: .init(top: 10, left: 15, bottom: 0, right: -15))
+        doneLowerLbl.layoutConstraints(top: doneTaskLbl.bottomAnchor, leading: tasksDoneView.leadingAnchor, bottom: nil, trailing: tasksDoneView.trailingAnchor, padding: .init(top: 6, left: 15, bottom: 0, right: -15))
     }
     public func updateValues(){
         

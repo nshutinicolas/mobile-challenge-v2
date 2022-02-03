@@ -5,11 +5,12 @@
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="photo" optional="YES" attributeType="Binary"/>
         <attribute name="priority" optional="YES" attributeType="String"/>
+        <attribute name="status" optional="YES" attributeType="String"/>
         <attribute name="title" optional="YES" attributeType="String"/>
         <attribute name="todo_description" optional="YES" attributeType="String"/>
         <attribute name="updated_at" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
     </entity>
     <elements>
-        <element name="TodoList" positionX="-63" positionY="-18" width="128" height="134"/>
+        <element name="TodoList" positionX="-63" positionY="-18" width="128" height="149"/>
     </elements>
 </model>
