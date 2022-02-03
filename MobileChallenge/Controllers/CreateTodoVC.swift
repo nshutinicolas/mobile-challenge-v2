@@ -10,7 +10,8 @@ import DropDown
 
 class CreateTodoVC: UIViewController {
     let priorityDropdown = DropDown()
-    
+    let scrollView = UIScrollView()
+    let wrappingView = UIView()
     let titleLbl: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 32, weight: .bold)
@@ -67,12 +68,18 @@ class CreateTodoVC: UIViewController {
         let view = UIView()
         return view
     }()
-    let titlePriorityField: UITextField = {
+    let priorityTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Select priority"
         textField.backgroundColor = #colorLiteral(red: 0.9568627451, green: 0.9607843137, blue: 0.9647058824, alpha: 1)
         textField.layer.cornerRadius = 4
         return textField
+    }()
+    let dropdownIcon: UIImageView = {
+        let image = UIImageView()
+        image.image = UIImage(systemName: "")
+        image.contentMode = .scaleAspectFit
+        return image
     }()
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,31 +92,35 @@ class CreateTodoVC: UIViewController {
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        view.addSubview(scrollView)
+        scrollView.addSubview(wrappingView)
         [titleLbl,addImageLbl,tapImageView, inputTitleLbl, titleInputField, inputDescriptionLbl, descriptionInputField, inputPriorityLbl, textPriorityView].forEach { item in
-            view.addSubview(item)
+            wrappingView.addSubview(item)
         }
-        textPriorityView.addSubview(titlePriorityField)
-        titleLbl.layoutConstraints(top: view.safeAreaLayoutGuide.topAnchor, leading: view.safeAreaLayoutGuide.leadingAnchor, bottom: nil, trailing: view.safeAreaLayoutGuide.trailingAnchor, padding: .init(top: 30, left: 20, bottom: 0, right: -20))
+        scrollView.layoutConstraints(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor)
+        wrappingView.layoutConstraints(top: scrollView.topAnchor, leading: scrollView.leadingAnchor, bottom: scrollView.bottomAnchor, trailing: scrollView.trailingAnchor)
+        textPriorityView.addSubview(priorityTextField)
+        titleLbl.layoutConstraints(top: wrappingView.topAnchor, leading: wrappingView.leadingAnchor, bottom: nil, trailing: wrappingView.trailingAnchor, padding: .init(top: 30, left: 20, bottom: 0, right: -20))
+        addImageLbl.layoutConstraints(top: titleLbl.bottomAnchor, leading: wrappingView.leadingAnchor, bottom: nil, trailing: wrappingView.trailingAnchor, padding: .init(top: 40, left: 20, bottom: 0, right: -15))
+        tapImageView.layoutConstraints(top: addImageLbl.bottomAnchor, leading: wrappingView.leadingAnchor, bottom: nil, trailing: wrappingView.trailingAnchor, padding: .init(top: 10, left: 15, bottom: 0, right: -15), size: .init(width: 0, height: 150))
+        inputTitleLbl.layoutConstraints(top: tapImageView.bottomAnchor, leading: wrappingView.leadingAnchor, bottom: nil, trailing: wrappingView.trailingAnchor, padding: .init(top: 30, left: 15, bottom: 0, right: -15))
+        titleInputField.layoutConstraints(top: inputTitleLbl.bottomAnchor, leading: wrappingView.leadingAnchor, bottom: nil, trailing: wrappingView.trailingAnchor, padding: .init(top: 10, left: 15, bottom: 0, right: -15), size: .init(width: 0, height: 50))
+        inputDescriptionLbl.layoutConstraints(top: titleInputField.bottomAnchor, leading: wrappingView.leadingAnchor, bottom: nil, trailing: wrappingView.trailingAnchor, padding: .init(top: 30, left: 15, bottom: 0, right: -15))
+        descriptionInputField.layoutConstraints(top: inputDescriptionLbl.bottomAnchor, leading: wrappingView.leadingAnchor, bottom: nil, trailing: wrappingView.trailingAnchor, padding: .init(top: 10, left: 15, bottom: 0, right: -15), size: .init(width: 0, height: 120))
+        inputPriorityLbl.layoutConstraints(top: descriptionInputField.bottomAnchor, leading: wrappingView.leadingAnchor, bottom: nil, trailing: wrappingView.trailingAnchor, padding: .init(top: 30, left: 15, bottom: 0, right: -15))
+        textPriorityView.layoutConstraints(top: inputPriorityLbl.bottomAnchor, leading: wrappingView.leadingAnchor, bottom: nil, trailing: wrappingView.trailingAnchor, padding: .init(top: 10, left: 15, bottom: 0, right: -15), size: .init(width: 0, height: 50))
+        priorityTextField.layoutConstraints(top: textPriorityView.topAnchor, leading: textPriorityView.leadingAnchor, bottom: textPriorityView.bottomAnchor, trailing: textPriorityView.trailingAnchor)
         
-        addImageLbl.layoutConstraints(top: titleLbl.bottomAnchor, leading: view.safeAreaLayoutGuide.leadingAnchor, bottom: nil, trailing: view.safeAreaLayoutGuide.trailingAnchor, padding: .init(top: 40, left: 20, bottom: 0, right: -15))
-        tapImageView.layoutConstraints(top: addImageLbl.bottomAnchor, leading: view.safeAreaLayoutGuide.leadingAnchor, bottom: nil, trailing: view.safeAreaLayoutGuide.trailingAnchor, padding: .init(top: 10, left: 15, bottom: 0, right: -15), size: .init(width: 0, height: 150))
-        inputTitleLbl.layoutConstraints(top: tapImageView.bottomAnchor, leading: view.safeAreaLayoutGuide.leadingAnchor, bottom: nil, trailing: view.safeAreaLayoutGuide.trailingAnchor, padding: .init(top: 30, left: 15, bottom: 0, right: -15))
-        titleInputField.layoutConstraints(top: inputTitleLbl.bottomAnchor, leading: view.safeAreaLayoutGuide.leadingAnchor, bottom: nil, trailing: view.safeAreaLayoutGuide.trailingAnchor, padding: .init(top: 10, left: 15, bottom: 0, right: -15), size: .init(width: 0, height: 50))
-        inputDescriptionLbl.layoutConstraints(top: titleInputField.bottomAnchor, leading: view.safeAreaLayoutGuide.leadingAnchor, bottom: nil, trailing: view.safeAreaLayoutGuide.trailingAnchor, padding: .init(top: 30, left: 15, bottom: 0, right: -15))
-        descriptionInputField.layoutConstraints(top: inputDescriptionLbl.bottomAnchor, leading: view.safeAreaLayoutGuide.leadingAnchor, bottom: nil, trailing: view.safeAreaLayoutGuide.trailingAnchor, padding: .init(top: 10, left: 15, bottom: 0, right: -15), size: .init(width: 0, height: 120))
-        inputPriorityLbl.layoutConstraints(top: descriptionInputField.bottomAnchor, leading: view.safeAreaLayoutGuide.leadingAnchor, bottom: nil, trailing: view.safeAreaLayoutGuide.trailingAnchor, padding: .init(top: 30, left: 15, bottom: 0, right: -15))
-        textPriorityView.layoutConstraints(top: inputPriorityLbl.bottomAnchor, leading: view.safeAreaLayoutGuide.leadingAnchor, bottom: nil, trailing: view.safeAreaLayoutGuide.trailingAnchor, padding: .init(top: 10, left: 15, bottom: 0, right: -15), size: .init(width: 0, height: 50))
-        titlePriorityField.layoutConstraints(top: textPriorityView.topAnchor, leading: textPriorityView.leadingAnchor, bottom: textPriorityView.bottomAnchor, trailing: textPriorityView.trailingAnchor)
     }
     private func tapPriority(){
-        priorityDropdown.anchorView = titlePriorityField
+        priorityDropdown.anchorView = textPriorityView
         priorityDropdown.dataSource = ["LOW", "MEDIUM", "HIGH"]
         priorityDropdown.bottomOffset = CGPoint(x: 0, y:(priorityDropdown.anchorView?.plainView.bounds.height)!)
         priorityDropdown.topOffset = CGPoint(x: 0, y:-(priorityDropdown.anchorView?.plainView.bounds.height)!)
         priorityDropdown.direction = .any
         priorityDropdown.selectionAction = { [unowned self] (index: Int, item: String) in
             print("Selected item: \(item) at index: \(index)")
-            self.titlePriorityField.text = item
+            self.priorityTextField.text = item
         }
     }
     @objc private func onOpenPriorityDropdown(){
