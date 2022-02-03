@@ -7,6 +7,7 @@
 
 import UIKit
 import DropDown
+import CloudKit
 
 class CreateTodoVC: UIViewController {
     let priorityDropdown = DropDown()
@@ -81,6 +82,20 @@ class CreateTodoVC: UIViewController {
         image.contentMode = .scaleAspectFit
         return image
     }()
+    let addTodoBtn: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .black
+        button.setTitle("CREATE TASK", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.addTarget(self, action: #selector(onAddTodo), for: .touchUpInside)
+        return button
+    }()
+    let testImage: UIImageView = {
+        let img = UIImageView()
+        img.image = UIImage(named: "IW_logo")
+        return img
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -89,16 +104,24 @@ class CreateTodoVC: UIViewController {
         tapImageView.addGestureRecognizer(openImageSource)
         let priorityTap = UITapGestureRecognizer(target: self, action: #selector(onOpenPriorityDropdown))
         textPriorityView.addGestureRecognizer(priorityTap)
+        registerFirst()
+    }
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         view.addSubview(scrollView)
         scrollView.addSubview(wrappingView)
+        scrollView.isUserInteractionEnabled = true
+        scrollView.isScrollEnabled = true
         [titleLbl,addImageLbl,tapImageView, inputTitleLbl, titleInputField, inputDescriptionLbl, descriptionInputField, inputPriorityLbl, textPriorityView].forEach { item in
             wrappingView.addSubview(item)
         }
         scrollView.layoutConstraints(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor)
+        scrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         wrappingView.layoutConstraints(top: scrollView.topAnchor, leading: scrollView.leadingAnchor, bottom: scrollView.bottomAnchor, trailing: scrollView.trailingAnchor)
+        wrappingView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         textPriorityView.addSubview(priorityTextField)
         titleLbl.layoutConstraints(top: wrappingView.topAnchor, leading: wrappingView.leadingAnchor, bottom: nil, trailing: wrappingView.trailingAnchor, padding: .init(top: 30, left: 20, bottom: 0, right: -20))
         addImageLbl.layoutConstraints(top: titleLbl.bottomAnchor, leading: wrappingView.leadingAnchor, bottom: nil, trailing: wrappingView.trailingAnchor, padding: .init(top: 40, left: 20, bottom: 0, right: -15))
@@ -110,7 +133,15 @@ class CreateTodoVC: UIViewController {
         inputPriorityLbl.layoutConstraints(top: descriptionInputField.bottomAnchor, leading: wrappingView.leadingAnchor, bottom: nil, trailing: wrappingView.trailingAnchor, padding: .init(top: 30, left: 15, bottom: 0, right: -15))
         textPriorityView.layoutConstraints(top: inputPriorityLbl.bottomAnchor, leading: wrappingView.leadingAnchor, bottom: nil, trailing: wrappingView.trailingAnchor, padding: .init(top: 10, left: 15, bottom: 0, right: -15), size: .init(width: 0, height: 50))
         priorityTextField.layoutConstraints(top: textPriorityView.topAnchor, leading: textPriorityView.leadingAnchor, bottom: textPriorityView.bottomAnchor, trailing: textPriorityView.trailingAnchor)
-        
+    }
+    func registerFirst(){
+        let imgData = (testImage.image?.pngData()!)!
+        let itemOf = TodoItem(title: "Complete the challenge", description: "Complete mobile challenge by awesomity", photo: imgData, priority: "MEDIUM")
+        StorageManager.shared.createTodo(with: itemOf) { id in
+            print(id)
+        } onFail: { error in
+            print(error)
+        }
     }
     private func tapPriority(){
         priorityDropdown.anchorView = textPriorityView
@@ -125,6 +156,22 @@ class CreateTodoVC: UIViewController {
     }
     @objc private func onOpenPriorityDropdown(){
         priorityDropdown.show()
+    }
+    @objc private func onAddTodo(){
+        guard let title = titleInputField.text, title == "", let description = descriptionInputField.text, description == "", let priority = priorityTextField.text, priority != "" else {
+            return
+        }
+        if selectedImageView.image == nil {
+            return
+        }
+        let imgData = (testImage.image?.pngData()!)!
+        let newTodo = TodoItem(title: title, description: description, photo: imgData, priority: priority)
+        StorageManager.shared.createTodo(with: newTodo) { id in
+            print(id)
+        } onFail: { error in
+            print(error)
+        }
+
     }
 }
 

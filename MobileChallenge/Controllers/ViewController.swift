@@ -7,15 +7,6 @@
 
 import UIKit
 
-struct Todo {
-    let id: String
-    let title: String
-    let descrition: String
-    let priority: String
-    let createDate: Date
-    let UpdateDate: Date
-}
-
 class ViewController: UIViewController {
 
     let headerView: UIView = {
@@ -41,7 +32,7 @@ class ViewController: UIViewController {
     }()
     let filterBtn: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "magnifyingglass"), for: .normal)
+        button.setImage(UIImage(systemName: "text.alignright"), for: .normal)
         button.contentMode = .scaleAspectFill
         button.tintColor = .white
         return button
@@ -80,15 +71,16 @@ class ViewController: UIViewController {
     let withValuesView = WithValueView()
     let todoTableView: UITableView = {
         let table = UITableView()
-        table.register(UITableViewCell.self, forCellReuseIdentifier: "TodolistCell")
+        table.register(TodoItemCellTableViewCell.self, forCellReuseIdentifier: "TodolistCell")
         table.isUserInteractionEnabled = true
         return table
     }()
-    let todos = [Todo]()
+    var todos = [TodoList]()
     override func viewDidLoad() {
         super.viewDidLoad()
         todoTableView.delegate = self
         todoTableView.dataSource = self
+        fetchTodo()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -113,6 +105,7 @@ class ViewController: UIViewController {
         mainView.addSubview(noValueView)
         noValueView.isHidden = true
         mainView.addSubview(withValuesView)
+        mainView.addSubview(todoTableView)
         view.addSubview(addTodoBtn)
         loader.center = view.center
         loader.startAnimating()
@@ -124,13 +117,42 @@ class ViewController: UIViewController {
         mainView.layoutConstraints(top: view.safeAreaLayoutGuide.topAnchor, leading: view.safeAreaLayoutGuide.leadingAnchor, bottom: view.bottomAnchor, trailing: view.safeAreaLayoutGuide.trailingAnchor, padding: .init(top: 60, left: 30, bottom: 0, right: -30))
         welcomeLbl.layoutConstraints(top: mainView.topAnchor, leading: mainView.leadingAnchor, bottom: nil, trailing: mainView.trailingAnchor, padding: .init(top: 20, left: 20, bottom: 0, right: 20))
         noValueView.layoutConstraints(top: welcomeLbl.bottomAnchor, leading: mainView.leadingAnchor, bottom: mainView.bottomAnchor, trailing: mainView.trailingAnchor, padding: .init(top: 20, left: 0, bottom: 0, right: 0))
-        withValuesView.layoutConstraints(top: welcomeLbl.bottomAnchor, leading: mainView.leadingAnchor, bottom: nil, trailing: mainView.trailingAnchor, padding: .init(top: 20, left: 0, bottom: 0, right: 0))
+        withValuesView.layoutConstraints(top: welcomeLbl.bottomAnchor, leading: mainView.leadingAnchor, bottom: nil, trailing: mainView.trailingAnchor, padding: .init(top: 20, left: 0, bottom: 0, right: 0),size: .init(width: 0, height: 60))
+        todoTableView.layoutConstraints(top: withValuesView.bottomAnchor, leading: mainView.leadingAnchor, bottom: mainView.bottomAnchor, trailing: mainView.trailingAnchor, padding: .init(top: 40, left: 0, bottom: 0, right: 0))
     }
     @objc private func addTodo(){
         let createTodo = CreateTodoVC()
         navigationController?.pushViewController(createTodo, animated: true)
     }
-
+    private func fetchTodo(){
+        StorageManager.shared.fetchAll { [weak self] todoItems in
+            DispatchQueue.main.async {
+                if todoItems.count == 0 {
+                    self?.fail()
+                    return
+                }
+                self?.success()
+                self?.todos = todoItems
+                print("items: \(todoItems.count) todo: \(String(describing: self?.todos.count))")
+            }
+        } onFail: { [weak self] error in
+            print(error)
+            self?.fail()
+        }
+    }
+    private func success(){
+        todoTableView.reloadData()
+        noValueView.isHidden = true
+        withValuesView.isHidden = false
+        todoTableView.isHidden = false
+        loader.isHidden = true
+    }
+    private func fail(){
+        loader.isHidden = true
+        noValueView.isHidden = false
+        todoTableView.isHidden = true
+        withValuesView.isHidden = true
+    }
 }
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
@@ -139,11 +161,21 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TodolistCell", for: indexPath)
-        cell.textLabel?.text = "\(todos[indexPath.row].title)"
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TodolistCell", for: indexPath) as! TodoItemCellTableViewCell
+//        cell.textLabel?.text = todos[indexPath.row].title
+        cell.titleLbl.text = "\(indexPath.row + 1) \(todos[indexPath.row].title ?? "")"
+        cell.statusLbl.text = todos[indexPath.row].priority
+        cell.createdAtLbl.text = "Created \(dateString(date: todos[indexPath.row].created_at ?? Date()))"
+        cell.updatedAtLbl.text = "Modified \(dateString(date: todos[indexPath.row].updated_at ?? Date()))"
         return cell
     }
-    
-    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 120
+    }
+    private func dateString(date: Date)-> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "d MMM y"
+        return dateFormatter.string(from: date)
+    }
 }
 
