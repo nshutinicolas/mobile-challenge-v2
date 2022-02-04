@@ -30,6 +30,7 @@ class StorageManager {
         newTodo.photo = info.photo
         newTodo.created_at = Date()
         newTodo.updated_at = Date()
+        newTodo.status = "active"
         do {
             try context.save()
             onSuccess(todoId)
@@ -42,6 +43,21 @@ class StorageManager {
         do {
             let todoItems = try context.fetch(TodoList.fetchRequest())
             onSuccess(todoItems)
+        } catch {
+            print("No todos yet error")
+            onFail("Failed to get values")
+        }
+    }
+    public func fetchSingleTodo(with id: String, onSuccess: @escaping (TodoList)-> Void, onFail: @escaping (String)-> Void) {
+        do {
+            let todoItems = try context.fetch(TodoList.fetchRequest())
+            let todo = todoItems.first(where: {$0.id == id})
+            if let todo = todo {
+                onSuccess(todo)
+                return
+            }
+            onFail("The todo aws not found")
+            return
         } catch {
             print("No todos yet error")
             onFail("Failed to get values")
