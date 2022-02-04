@@ -120,7 +120,7 @@ class CreateTodoVC: UIViewController {
         tapImageView.addGestureRecognizer(openImageSource)
         let priorityTap = UITapGestureRecognizer(target: self, action: #selector(onOpenPriorityDropdown))
         textPriorityView.addGestureRecognizer(priorityTap)
-        navigationController?.navigationBar.topItem?.backButtonTitle = ""
+//        navigationController?.navigationBar.topItem?.backButtonTitle = ""
     }
     private func permissionStatus(for status: PHAuthorizationStatus) {
         switch status {
@@ -216,7 +216,6 @@ class CreateTodoVC: UIViewController {
         } onFail: { error in
             print(error)
         }
-
     }
 }
 

@@ -124,6 +124,10 @@ class ViewController: UIViewController {
     }
     @objc private func addTodo(){
         let createTodo = CreateTodoVC()
+        let backBarBtn = UIBarButtonItem()
+        backBarBtn.title = ""
+        backBarBtn.image = UIImage(systemName: "arrow-backward")
+        navigationItem.backBarButtonItem = backBarBtn
         navigationController?.pushViewController(createTodo, animated: true)
     }
     private func fetchTodo(){
@@ -179,6 +183,10 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let singleTodo = TodoDetailsVC()
+        let backBarBtn = UIBarButtonItem()
+        backBarBtn.title = ""
+        backBarBtn.image = UIImage(systemName: "arrow-backward")
+        navigationItem.backBarButtonItem = backBarBtn
         singleTodo.updateContent(with: todos[indexPath.row])
         navigationController?.pushViewController(singleTodo, animated: true)
     }

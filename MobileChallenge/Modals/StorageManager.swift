@@ -63,8 +63,29 @@ class StorageManager {
             onFail("Failed to get values")
         }
     }
-    public func updateTodo(with item: TodoList){
-//        context.
+    public func updateTodo(with item: TodoList, info: TodoItem, onComplete: @escaping (Bool)-> Void){
+        
+    }
+    public func completeTaskUpdate(of item: TodoList, onComplete: @escaping (Bool)-> Void){
+        item.status = "completed"
+        item.updated_at = Date()
+        do {
+            try context.save()
+            onComplete(true)
+        } catch {
+            print("error updating")
+            onComplete(false)
+        }
+    }
+    public func deleteTodoItem(item: TodoList, onComplete: @escaping (Bool)-> Void){
+        context.delete(item)
+        do {
+            try context.save()
+            onComplete(true)
+        } catch {
+            onComplete(false)
+            print("Failed to delete")
+        }
     }
 }
 

@@ -45,14 +45,16 @@ class TodoDetailsVC: UIViewController {
         let button = UIButton()
         button.setImage(UIImage(systemName: "applepencil"), for: .normal)
         button.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-        button.layer.cornerRadius = 2
+        button.layer.cornerRadius = 4
+        button.addTarget(self, action: #selector(editTodoItem), for: .touchUpInside)
         return button
     }()
     let deleteButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "multiply"), for: .normal)
         button.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-        button.layer.cornerRadius = 2
+        button.layer.cornerRadius = 4
+        button.addTarget(self, action: #selector(deleteTodoItem), for: .touchUpInside)
         return button
     }()
     let doneButton: UIButton = {
@@ -62,9 +64,21 @@ class TodoDetailsVC: UIViewController {
         button.setTitleColor(.black, for: .normal)
         button.layer.borderColor = UIColor.black.cgColor
         button.backgroundColor = .systemBackground
-        button.layer.cornerRadius = 2
+        button.layer.cornerRadius = 4
+        button.addTarget(self, action: #selector(completeTask), for: .touchUpInside)
         return button
     }()
+    let completedButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "checkmark"), for: .normal)
+        button.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        button.layer.cornerRadius = 4
+        button.addTarget(self, action: #selector(deleteTodoItem), for: .touchUpInside)
+        button.setTitleColor(.green, for: .normal)
+//        button.tintColor = .green
+        return button
+    }()
+
     let titleLbl: UILabel = {
         let label = UILabel()
         label.text = "This is a placeholder for hthi task"
@@ -124,13 +138,14 @@ class TodoDetailsVC: UIViewController {
         buttonStack.addArrangedSubview(editButton)
         buttonStack.addArrangedSubview(deleteButton)
         buttonStack.addArrangedSubview(doneButton)
+        doneButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        doneButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
         writeDateStack.addArrangedSubview(createdAtLbl)
         writeDateStack.addArrangedSubview(updatedAtLbl)
 
         todoImageView.layoutConstraints(top: view.safeAreaLayoutGuide.topAnchor, leading: view.safeAreaLayoutGuide.leadingAnchor, bottom: nil, trailing: view.safeAreaLayoutGuide.trailingAnchor, size: .init(width: 0, height: 250))
         topStack.layoutConstraints(top: todoImageView.bottomAnchor, leading: view.safeAreaLayoutGuide.leadingAnchor, bottom: nil, trailing: view.safeAreaLayoutGuide.trailingAnchor, padding: .init(top: 20, left: 20, bottom: 0, right: -20))
-        doneButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        doneButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        
         editButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
         deleteButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
         titleLbl.layoutConstraints(top: topStack.bottomAnchor, leading: view.safeAreaLayoutGuide.leadingAnchor, bottom: nil, trailing: view.safeAreaLayoutGuide.trailingAnchor, padding: .init(top: 20, left: 20, bottom: 0, right: -20))
@@ -142,13 +157,46 @@ class TodoDetailsVC: UIViewController {
     public func updateContent(with todoItem: TodoList){
         DispatchQueue.main.async { [weak self] in
             self?.todo = todoItem
-            print(todoItem.photo ?? "no image data")
             self?.titleLbl.text = todoItem.title
             self?.descriptionLbl.text = todoItem.todo_description
-            self?.createdAtLbl.text = "Created \(self?.dateString(date: todoItem.created_at ?? Date()))"
-            self?.updatedAtLbl.text = "Updated \(self?.dateString(date: todoItem.updated_at ?? Date()))"
+            self?.createdAtLbl.text = "Created \(self?.dateString(date: todoItem.created_at ?? Date()) ?? "")"
+            self?.updatedAtLbl.text = "Updated \(self?.dateString(date: todoItem.updated_at ?? Date()) ?? "")"
             self?.todoImageView.image = UIImage(data: todoItem.photo!)
+            if todoItem.status == "completed"{
+                self?.doneButton.setTitle("", for: .normal)
+                self?.doneButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
+            }
         }
+    }
+    
+    @objc private func completeTask(){
+        if let todo = todo {
+            if todo.status == "completed" {
+                return
+            }
+            StorageManager.shared.completeTaskUpdate(of: todo) { [weak self] success in
+                if success {
+                    DispatchQueue.main.async {
+                        self?.todo?.status = "completed"
+                        return
+                    }
+                }
+                print("Something not fine")
+                return
+            }
+        }
+    }
+    @objc private func deleteTodoItem(){
+        if let todo = todo {
+            StorageManager.shared.deleteTodoItem(item: todo) { [weak self] success in
+                if success {
+                    self?.navigationController?.popViewController(animated: true)
+                }
+            }
+        }
+    }
+    @objc private func editTodoItem(){
+        print("To edit later")
     }
     private func dateString(date: Date)-> String {
         let dateFormatter = DateFormatter()

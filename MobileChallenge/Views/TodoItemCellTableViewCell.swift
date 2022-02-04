@@ -73,6 +73,5 @@ class TodoItemCellTableViewCell: UITableViewCell {
         writeDateStack.layoutConstraints(top: statusLbl.bottomAnchor, leading: statusImage.trailingAnchor, bottom: nil, trailing: trailingAnchor, padding: .init(top: 15, left: 15, bottom: 0, right: -10))
     }
     public func updateValues(with info: TodoItem){
-
     }
 }
